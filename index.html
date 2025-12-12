@@ -702,6 +702,194 @@
       }
     }
 
+    /* Privacy Modal Styles */
+    .privacy-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 8, 22, 0.95);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 20px;
+      animation: modalFadeIn 0.4s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .privacy-modal.hidden {
+      display: none;
+    }
+
+    .privacy-card {
+      background: radial-gradient(circle at top, rgba(148,163,184,0.25), transparent 65%),
+                  rgba(15,23,42,0.98);
+      border: 1px solid rgba(148,163,184,0.4);
+      border-radius: 20px;
+      padding: 28px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+      animation: modalSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes modalSlideUp {
+      from {
+        transform: translateY(40px) scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .privacy-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 0%, rgba(249,115,22,0.15), transparent 60%);
+      pointer-events: none;
+    }
+
+    .privacy-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .privacy-icon {
+      font-size: 32px;
+      animation: iconBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s backwards;
+    }
+
+    @keyframes iconBounce {
+      from {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    .privacy-header h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #e5e7eb;
+      animation: textSlideInLeft 0.5s ease 0.3s backwards;
+    }
+
+    @keyframes textSlideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .privacy-body {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .privacy-body p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 0 0 12px;
+      animation: fadeInUp 0.5s ease 0.4s backwards;
+    }
+
+    .privacy-features {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .privacy-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(15,23,42,0.7);
+      border: 1px solid rgba(148,163,184,0.3);
+      border-radius: 10px;
+      font-size: 13px;
+      color: #e5e7eb;
+      animation: featureSlideIn 0.4s ease backwards;
+    }
+
+    .privacy-feature:nth-child(1) { animation-delay: 0.5s; }
+    .privacy-feature:nth-child(2) { animation-delay: 0.6s; }
+    .privacy-feature:nth-child(3) { animation-delay: 0.7s; }
+
+    @keyframes featureSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .privacy-feature span:first-child {
+      font-size: 16px;
+    }
+
+    .privacy-footer {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      animation: fadeInUp 0.5s ease 0.8s backwards;
+    }
+
+    .btn-privacy-ok {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      border: 1px solid rgba(248,250,252,0.1);
+      border-radius: 999px;
+      padding: 12px 32px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(248,113,22,0.4);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .btn-privacy-ok:hover {
+      background: linear-gradient(135deg, #fb923c, #fdba74);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(248,113,22,0.5);
+    }
+
+    .btn-privacy-ok:active {
+      transform: scale(0.95);
+    }
+
     /* Mobile optimizations */
     @media (max-width: 480px) {
       body {
@@ -774,10 +962,69 @@
       .mini-steps li {
         font-size: 9px;
       }
+
+      .privacy-card {
+        padding: 20px;
+      }
+
+      .privacy-header h3 {
+        font-size: 18px;
+      }
+
+      .privacy-body p {
+        font-size: 13px;
+      }
+
+      .privacy-feature {
+        font-size: 12px;
+        padding: 7px 10px;
+      }
+
+      .btn-privacy-ok {
+        padding: 10px 24px;
+        font-size: 13px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Privacy Modal -->
+  <div class="privacy-modal" id="privacyModal">
+    <div class="privacy-card">
+      <div class="privacy-header">
+        <span class="privacy-icon">🔒</span>
+        <h3>Your Privacy Rocks!</h3>
+      </div>
+      
+      <div class="privacy-body">
+        <p>Hey there! Before you start matching, here's the tea: 🍵</p>
+        
+        <div class="privacy-features">
+          <div class="privacy-feature">
+            <span>💻</span>
+            <span><strong>100% Client-Side</strong> – Everything runs in your browser</span>
+          </div>
+          <div class="privacy-feature">
+            <span>🚫</span>
+            <span><strong>Zero Data Sharing</strong> – We don't see, store, or send anything</span>
+          </div>
+          <div class="privacy-feature">
+            <span>🔐</span>
+            <span><strong>Total Privacy</strong> – Match away without worry!</span>
+          </div>
+        </div>
+        
+        <p style="margin-top: 16px; font-size: 13px; color: #9ca3af;">
+          TL;DR: Your names, your secrets. We're just here for the nostalgia! ✨
+        </p>
+      </div>
+      
+      <div class="privacy-footer">
+        <button class="btn-privacy-ok" id="privacyOkBtn">Got it! Let's FLAMES 🔥</button>
+      </div>
+    </div>
+  </div>
+
   <div class="confetti-container" id="confettiContainer"></div>
 
   <div class="app-shell">
@@ -1065,9 +1312,18 @@
       });
     });
 
-    // Auto-focus on load
-    window.addEventListener("load", function() {
+    // Privacy Modal Handler
+    const privacyModal = document.getElementById("privacyModal");
+    const privacyOkBtn = document.getElementById("privacyOkBtn");
+
+    privacyOkBtn.addEventListener("click", function() {
+      privacyModal.classList.add("hidden");
       name1Input.focus();
+    });
+
+    // Auto-focus on load (after modal is closed)
+    window.addEventListener("load", function() {
+      // Modal is shown by default, focus happens after clicking OK
     });
   </script>
 </body>
