@@ -36,6 +36,8 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      overflow: hidden;
+      position: relative;
     }
 
     .app-shell {
@@ -97,11 +99,6 @@
       border: 1px solid rgba(248,250,252,0.18);
       background: linear-gradient(135deg, rgba(249,115,22,0.25), rgba(15,23,42,0.4));
       color: #fff;
-    }
-
-    .subtitle {
-      font-size: 13px;
-      color: var(--muted);
     }
 
     .pill-row {
@@ -342,6 +339,24 @@
       padding: 6px 6px 10px;
     }
 
+    .result-shell.reveal {
+      animation: resultPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes resultPop {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
     .flame-badge {
       display: inline-flex;
       align-items: center;
@@ -369,6 +384,22 @@
       font-size: 13px;
       color: #fffbeb;
       box-shadow: 0 0 12px rgba(248,113,22,0.8);
+    }
+
+    .result-shell.reveal .flame-letter {
+      animation: letterGlow 0.6s ease 0.2s;
+    }
+
+    @keyframes letterGlow {
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(248,113,22,0.8);
+      }
+      50% {
+        box-shadow: 
+          0 0 30px rgba(248,113,22,1),
+          0 0 60px rgba(248,113,22,0.6);
+        transform: scale(1.2);
+      }
     }
 
     .relationship {
@@ -457,9 +488,39 @@
     .footer a:hover {
       text-decoration: underline;
     }
+
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      font-size: 20px;
+      animation: confettiFall 3s linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="confetti-container" id="confettiContainer"></div>
+
   <div class="app-shell">
     <header class="app-header">
       <div class="title-stack">
@@ -491,32 +552,20 @@
           <div class="input-pair">
             <div class="field">
               <label for="name1">Name one</label>
-              <input
-                type="text"
-                id="name1"
-                placeholder="e.g. Alex Carter" />
+              <input type="text" id="name1" placeholder="e.g. Alex Carter" />
             </div>
             <div class="field">
               <label for="name2">Name two</label>
-              <input
-                type="text"
-                id="name2"
-                placeholder="e.g. Jamie Singh" />
+              <input type="text" id="name2" placeholder="e.g. Jamie Singh" />
             </div>
           </div>
         </div>
 
         <div class="actions-row">
-          <p class="hint">
-            Uses the classic letter‑crossing FLAMES logic for a just‑for‑fun match.
-          </p>
+          <p class="hint">Uses the classic letter-crossing FLAMES logic for a just-for-fun match.</p>
           <div class="btn-row">
-            <button class="btn-ghost" id="resetBtn" type="button">
-              Reset
-            </button>
-            <button class="btn-primary" id="matchBtn" type="button">
-              Run FLAMES
-            </button>
+            <button class="btn-ghost" id="resetBtn" type="button">Reset</button>
+            <button class="btn-primary" id="matchBtn" type="button">🔥 Run FLAMES</button>
           </div>
         </div>
 
@@ -525,7 +574,7 @@
           <ul>
             <li>Strip spaces and cancel shared letters in both names.</li>
             <li>Count the leftover letters.</li>
-            <li>Use that count to pick one letter from F‑L‑A‑M‑E‑S.</li>
+            <li>Use that count to pick one letter from F-L-A-M-E-S.</li>
           </ul>
         </div>
 
@@ -538,7 +587,7 @@
           <span class="label">For entertainment only</span>
         </h2>
 
-        <div class="result-shell">
+        <div class="result-shell" id="resultShell">
           <div class="flame-badge">
             <span class="flame-letter" id="flameLetter">–</span>
             <span id="badgeText">Waiting for names</span>
@@ -548,7 +597,7 @@
             <span id="relationshipLabel">No match yet</span>
           </div>
           <div class="relationship-detail" id="relationshipDetail">
-            Type two names and hit “Run FLAMES” to see what the paper game says.
+            Type two names and hit "Run FLAMES" to see what the paper game says.
           </div>
 
           <div class="tags" id="tagsRow">
@@ -561,7 +610,7 @@
 
     <footer class="footer">
       <span>FLAMES is a playful name game, not serious compatibility advice.</span>
-      <span>Built with plain HTML, CSS &amp; JavaScript.</span>
+      <span>Built with plain HTML, CSS & JavaScript.</span>
     </footer>
   </div>
 
@@ -571,6 +620,8 @@
     const matchBtn = document.getElementById("matchBtn");
     const resetBtn = document.getElementById("resetBtn");
     const errorEl = document.getElementById("error");
+    const resultShell = document.getElementById("resultShell");
+    const confettiContainer = document.getElementById("confettiContainer");
 
     const flameLetterEl = document.getElementById("flameLetter");
     const badgeTextEl = document.getElementById("badgeText");
@@ -581,12 +632,12 @@
     const FLAMES_MAP = {
       F: {
         label: "Friends",
-        detail: "Strong buddy energy. Expect memes, inside jokes, and late‑night chats.",
+        detail: "Strong buddy energy. Expect memes, inside jokes, and late-night chats.",
         tags: ["platonic vibes", "trusted ally"]
       },
       L: {
         label: "Love",
-        detail: "Soft‑focus filter unlocked. The game thinks there’s romantic potential here.",
+        detail: "Soft-focus filter unlocked. The game thinks there's romantic potential here.",
         tags: ["crush alert", "heart eyes"]
       },
       A: {
@@ -596,7 +647,7 @@
       },
       M: {
         label: "Marriage",
-        detail: "Long‑term storyline unlocked. Think commitment, stability, and shared plans.",
+        detail: "Long-term storyline unlocked. Think commitment, stability, and shared plans.",
         tags: ["endgame?", "power duo"]
       },
       E: {
@@ -606,8 +657,8 @@
       },
       S: {
         label: "Siblings",
-        detail: "Sibling energy. Teasing, roasting, but low‑key looking out for each other.",
-        tags: ["chaos but caring", "family‑coded"]
+        detail: "Sibling energy. Teasing, roasting, but low-key looking out for each other.",
+        tags: ["chaos but caring", "family-coded"]
       }
     };
 
@@ -623,8 +674,8 @@
         const ch = nameA[i];
         const idx = nameB.indexOf(ch);
         if (idx !== -1) {
-          nameA[i] = "";          // cancel in A
-          nameB[idx] = "";        // cancel in B
+          nameA[i] = "";
+          nameB[idx] = "";
         }
       }
 
@@ -644,7 +695,6 @@
       const remainingCount = countUniqueLetters(clean1, clean2);
 
       if (remainingCount === 0) {
-        // edge case: identical names or everything cancelled
         return "S";
       }
 
@@ -661,8 +711,32 @@
       return arr[0];
     }
 
+    function createConfetti() {
+      const emojis = ["🎉", "✨", "🔥", "❤️", "💫", "⭐", "🌟"];
+      
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.animationDelay = Math.random() * 0.3 + "s";
+        confetti.style.animationDuration = Math.random() * 2 + 2 + "s";
+        
+        confettiContainer.appendChild(confetti);
+        
+        setTimeout(() => confetti.remove(), 3500);
+      }
+    }
+
     function renderResult(letter, rawName1, rawName2) {
       const def = FLAMES_MAP[letter] || FLAMES_MAP["F"];
+
+      resultShell.classList.remove("reveal");
+      
+      setTimeout(() => {
+        createConfetti();
+        resultShell.classList.add("reveal");
+      }, 50);
 
       flameLetterEl.textContent = letter;
       relationshipLabelEl.textContent = def.label;
@@ -670,10 +744,10 @@
 
       const pretty1 = rawName1.trim() || "Name one";
       const pretty2 = rawName2.trim() || "Name two";
-      badgeTextEl.textContent = `${pretty1} × ${pretty2}`;
+      badgeTextEl.textContent = pretty1 + " × " + pretty2;
 
       tagsRowEl.innerHTML = "";
-      def.tags.forEach((tag) => {
+      def.tags.forEach(function(tag) {
         const span = document.createElement("span");
         span.className = "tag";
         span.textContent = tag;
@@ -691,11 +765,12 @@
       name2Input.value = "";
       errorEl.textContent = "";
 
+      resultShell.classList.remove("reveal");
+
       flameLetterEl.textContent = "–";
       badgeTextEl.textContent = "Waiting for names";
       relationshipLabelEl.textContent = "No match yet";
-      relationshipDetailEl.textContent =
-        "Type two names and hit “Run FLAMES” to see what the paper game says.";
+      relationshipDetailEl.textContent = "Type two names and hit \"Run FLAMES\" to see what the paper game says.";
 
       tagsRowEl.innerHTML = "";
       const t1 = document.createElement("span");
@@ -708,7 +783,7 @@
       tagsRowEl.appendChild(t2);
     }
 
-    matchBtn.addEventListener("click", () => {
+    matchBtn.addEventListener("click", function() {
       errorEl.textContent = "";
       try {
         const raw1 = name1Input.value;
@@ -722,8 +797,8 @@
 
     resetBtn.addEventListener("click", resetUI);
 
-    [name1Input, name2Input].forEach((input, index) => {
-      input.addEventListener("keydown", (e) => {
+    [name1Input, name2Input].forEach(function(input, index) {
+      input.addEventListener("keydown", function(e) {
         if (e.key === "Enter") {
           e.preventDefault();
           if (index === 0) {
