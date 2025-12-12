@@ -1,1 +1,740 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FLAMES Match</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050816;
+      --card: #0f172a;
+      --accent: #f97316;
+      --accent-soft: rgba(249,115,22,0.15);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #f87171;
+      --radius: 14px;
+      --shadow-soft: 0 18px 40px rgba(15,23,42,0.7);
+      --border-subtle: 1px solid rgba(148,163,184,0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, #1f2937 0, rgba(15,23,42,0) 55%),
+        radial-gradient(circle at 100% 100%, #7c2d12 0, rgba(15,23,42,0) 55%),
+        var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 720px;
+      background: radial-gradient(circle at top, rgba(148,163,184,0.35), transparent 55%),
+                  rgba(15,23,42,0.96);
+      border-radius: 22px;
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow: 0 28px 70px rgba(15,23,42,0.9);
+      padding: 24px 24px 20px;
+      backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(248,113,113,0.16), transparent 55%),
+        radial-gradient(circle at 85% 100%, rgba(96,165,250,0.16), transparent 55%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .app-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+
+    .title-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .app-title {
+      font-size: 24px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chip {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 3px 8px 2px;
+      border-radius: 20px;
+      border: 1px solid rgba(248,250,252,0.18);
+      background: linear-gradient(135deg, rgba(249,115,22,0.25), rgba(15,23,42,0.4));
+      color: #fff;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+      background: rgba(15,23,42,0.7);
+    }
+
+    .pill strong {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .flame-orb {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 60%, #020617);
+      position: relative;
+      box-shadow:
+        0 0 22px rgba(248,113,22,0.75),
+        0 0 60px rgba(248,113,22,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fffbeb;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      font-size: 12px;
+    }
+
+    .flame-orb::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 0%, rgba(254,249,195,0.8), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+    }
+
+    .layout {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 720px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .app-shell {
+        padding: 18px 16px 16px;
+      }
+      .app-header {
+        align-items: flex-start;
+      }
+    }
+
+    .panel {
+      position: relative;
+      border-radius: var(--radius);
+      background: radial-gradient(circle at top left, rgba(148,163,184,0.18), transparent 55%),
+                  rgba(15,23,42,0.95);
+      border: var(--border-subtle);
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .panel h2 span.label {
+      color: #e5e7eb;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      border-radius: 999px;
+      padding: 3px 8px 2px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.85);
+    }
+
+    .names-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .names-row .side-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    .input-pair {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .input-pair {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px 9px;
+      border-radius: 9px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.9);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(148,163,184,0.65);
+    }
+
+    input[type="text"]:focus {
+      border-color: rgba(249,115,22,0.9);
+      box-shadow: 0 0 0 1px rgba(249,115,22,0.35);
+      background: rgba(15,23,42,0.95);
+    }
+
+    .actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      color: var(--text);
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      border-color: rgba(248,250,252,0.05);
+      color: #111827;
+      box-shadow:
+        0 10px 22px rgba(248,113,22,0.45),
+        0 0 0 1px rgba(15,23,42,0.75) inset;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #fb923c, #fdba74);
+    }
+
+    .btn-ghost {
+      border-color: rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.7);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(148,163,184,0.9);
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .result-shell {
+      position: relative;
+      text-align: center;
+      padding: 6px 6px 10px;
+    }
+
+    .flame-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: conic-gradient(from 200deg, rgba(248,113,22,0.2), rgba(37,99,235,0.2), rgba(248,113,22,0.25));
+      border: 1px solid rgba(148,163,184,0.5);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      margin-bottom: 6px;
+      color: #e5e7eb;
+    }
+
+    .flame-letter {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 65%, #020617);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: #fffbeb;
+      box-shadow: 0 0 12px rgba(248,113,22,0.8);
+    }
+
+    .relationship {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .relationship span {
+      color: #fed7aa;
+    }
+
+    .relationship-detail {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 3px 8px 2px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--muted);
+      background: rgba(15,23,42,0.8);
+    }
+
+    .error {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--danger);
+    }
+
+    .mini-steps {
+      margin-top: 4px;
+      border-radius: 10px;
+      border: 1px dashed rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.85);
+      padding: 6px 8px 5px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .mini-steps strong {
+      color: #e5e7eb;
+    }
+
+    .mini-steps ul {
+      padding-left: 16px;
+      margin: 4px 0 0;
+    }
+
+    .mini-steps li {
+      margin: 0;
+    }
+
+    .footer {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      position: relative;
+    }
+
+    .footer a {
+      color: #f97316;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="title-stack">
+        <div class="app-title">
+          FLAMES
+          <span class="chip">Name Match Lab</span>
+        </div>
+        <div class="pill-row">
+          <div class="pill"><strong>F</strong>riends</div>
+          <div class="pill"><strong>L</strong>ove</div>
+          <div class="pill"><strong>A</strong>ffection</div>
+          <div class="pill"><strong>M</strong>arriage</div>
+          <div class="pill"><strong>E</strong>nemies</div>
+          <div class="pill"><strong>S</strong>iblings</div>
+        </div>
+      </div>
+      <div class="flame-orb">🔥</div>
+    </header>
+
+    <main class="layout">
+      <section class="panel" aria-label="Input names for FLAMES">
+        <h2>
+          Enter names
+          <span class="label">Paper game, web vibes</span>
+        </h2>
+
+        <div class="names-row">
+          <span class="side-label">Between</span>
+          <div class="input-pair">
+            <div class="field">
+              <label for="name1">Name one</label>
+              <input
+                type="text"
+                id="name1"
+                placeholder="e.g. Alex Carter" />
+            </div>
+            <div class="field">
+              <label for="name2">Name two</label>
+              <input
+                type="text"
+                id="name2"
+                placeholder="e.g. Jamie Singh" />
+            </div>
+          </div>
+        </div>
+
+        <div class="actions-row">
+          <p class="hint">
+            Uses the classic letter‑crossing FLAMES logic for a just‑for‑fun match.
+          </p>
+          <div class="btn-row">
+            <button class="btn-ghost" id="resetBtn" type="button">
+              Reset
+            </button>
+            <button class="btn-primary" id="matchBtn" type="button">
+              Run FLAMES
+            </button>
+          </div>
+        </div>
+
+        <div class="mini-steps">
+          <strong>How it works:</strong>
+          <ul>
+            <li>Strip spaces and cancel shared letters in both names.</li>
+            <li>Count the leftover letters.</li>
+            <li>Use that count to pick one letter from F‑L‑A‑M‑E‑S.</li>
+          </ul>
+        </div>
+
+        <div id="error" class="error" role="alert" aria-live="polite"></div>
+      </section>
+
+      <aside class="panel" aria-label="FLAMES result">
+        <h2>
+          Result
+          <span class="label">For entertainment only</span>
+        </h2>
+
+        <div class="result-shell">
+          <div class="flame-badge">
+            <span class="flame-letter" id="flameLetter">–</span>
+            <span id="badgeText">Waiting for names</span>
+          </div>
+
+          <div class="relationship">
+            <span id="relationshipLabel">No match yet</span>
+          </div>
+          <div class="relationship-detail" id="relationshipDetail">
+            Type two names and hit “Run FLAMES” to see what the paper game says.
+          </div>
+
+          <div class="tags" id="tagsRow">
+            <span class="tag">nostalgia mode</span>
+            <span class="tag">school desk game</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <span>FLAMES is a playful name game, not serious compatibility advice.</span>
+      <span>Built with plain HTML, CSS &amp; JavaScript.</span>
+    </footer>
+  </div>
+
+  <script>
+    const name1Input = document.getElementById("name1");
+    const name2Input = document.getElementById("name2");
+    const matchBtn = document.getElementById("matchBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const errorEl = document.getElementById("error");
+
+    const flameLetterEl = document.getElementById("flameLetter");
+    const badgeTextEl = document.getElementById("badgeText");
+    const relationshipLabelEl = document.getElementById("relationshipLabel");
+    const relationshipDetailEl = document.getElementById("relationshipDetail");
+    const tagsRowEl = document.getElementById("tagsRow");
+
+    const FLAMES_MAP = {
+      F: {
+        label: "Friends",
+        detail: "Strong buddy energy. Expect memes, inside jokes, and late‑night chats.",
+        tags: ["platonic vibes", "trusted ally"]
+      },
+      L: {
+        label: "Love",
+        detail: "Soft‑focus filter unlocked. The game thinks there’s romantic potential here.",
+        tags: ["crush alert", "heart eyes"]
+      },
+      A: {
+        label: "Affection",
+        detail: "Warm, caring connection. Lots of support, hype, and gentle chaos.",
+        tags: ["comfort zone", "soft spot"]
+      },
+      M: {
+        label: "Marriage",
+        detail: "Long‑term storyline unlocked. Think commitment, stability, and shared plans.",
+        tags: ["endgame?", "power duo"]
+      },
+      E: {
+        label: "Enemies",
+        detail: "Spicy dynamic detected. Rivalry, banter, or just clashing personalities.",
+        tags: ["frenemies", "main character conflict"]
+      },
+      S: {
+        label: "Siblings",
+        detail: "Sibling energy. Teasing, roasting, but low‑key looking out for each other.",
+        tags: ["chaos but caring", "family‑coded"]
+      }
+    };
+
+    function normalizeName(value) {
+      return value.toLowerCase().replace(/[^a-z]/g, "");
+    }
+
+    function countUniqueLetters(a, b) {
+      let nameA = a.split("");
+      let nameB = b.split("");
+
+      for (let i = 0; i < nameA.length; i++) {
+        const ch = nameA[i];
+        const idx = nameB.indexOf(ch);
+        if (idx !== -1) {
+          nameA[i] = "";          // cancel in A
+          nameB[idx] = "";        // cancel in B
+        }
+      }
+
+      const remainingA = nameA.join("").replace(/ /g, "");
+      const remainingB = nameB.join("").replace(/ /g, "");
+      return remainingA.length + remainingB.length;
+    }
+
+    function runFlames(name1, name2) {
+      const clean1 = normalizeName(name1);
+      const clean2 = normalizeName(name2);
+
+      if (!clean1 || !clean2) {
+        throw new Error("Please enter two valid names with at least one letter each.");
+      }
+
+      const remainingCount = countUniqueLetters(clean1, clean2);
+
+      if (remainingCount === 0) {
+        // edge case: identical names or everything cancelled
+        return "S";
+      }
+
+      const flames = ["F", "L", "A", "M", "E", "S"];
+      let idx = 0;
+      let count = remainingCount;
+
+      const arr = [...flames];
+      while (arr.length > 1) {
+        idx = (idx + count - 1) % arr.length;
+        arr.splice(idx, 1);
+      }
+
+      return arr[0];
+    }
+
+    function renderResult(letter, rawName1, rawName2) {
+      const def = FLAMES_MAP[letter] || FLAMES_MAP["F"];
+
+      flameLetterEl.textContent = letter;
+      relationshipLabelEl.textContent = def.label;
+      relationshipDetailEl.textContent = def.detail;
+
+      const pretty1 = rawName1.trim() || "Name one";
+      const pretty2 = rawName2.trim() || "Name two";
+      badgeTextEl.textContent = `${pretty1} × ${pretty2}`;
+
+      tagsRowEl.innerHTML = "";
+      def.tags.forEach((tag) => {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = tag;
+        tagsRowEl.appendChild(span);
+      });
+
+      const base = document.createElement("span");
+      base.className = "tag";
+      base.textContent = "classic FLAMES";
+      tagsRowEl.appendChild(base);
+    }
+
+    function resetUI() {
+      name1Input.value = "";
+      name2Input.value = "";
+      errorEl.textContent = "";
+
+      flameLetterEl.textContent = "–";
+      badgeTextEl.textContent = "Waiting for names";
+      relationshipLabelEl.textContent = "No match yet";
+      relationshipDetailEl.textContent =
+        "Type two names and hit “Run FLAMES” to see what the paper game says.";
+
+      tagsRowEl.innerHTML = "";
+      const t1 = document.createElement("span");
+      t1.className = "tag";
+      t1.textContent = "nostalgia mode";
+      const t2 = document.createElement("span");
+      t2.className = "tag";
+      t2.textContent = "school desk game";
+      tagsRowEl.appendChild(t1);
+      tagsRowEl.appendChild(t2);
+    }
+
+    matchBtn.addEventListener("click", () => {
+      errorEl.textContent = "";
+      try {
+        const raw1 = name1Input.value;
+        const raw2 = name2Input.value;
+        const letter = runFlames(raw1, raw2);
+        renderResult(letter, raw1, raw2);
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong. Try again.";
+      }
+    });
+
+    resetBtn.addEventListener("click", resetUI);
+
+    [name1Input, name2Input].forEach((input, index) => {
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (index === 0) {
+            name2Input.focus();
+          } else {
+            matchBtn.click();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
