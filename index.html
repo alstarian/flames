@@ -22,13 +22,8 @@
       box-sizing: border-box;
     }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-
     body {
+      margin: 0;
       min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
@@ -43,663 +38,6 @@
       padding: 16px;
       overflow-x: hidden;
       position: relative;
-      -webkit-font-smoothing: antialiased;
-      -webkit-touch-callout: none;
-    }
-
-    .app-shell {
-      width: 100%;
-      max-width: 720px;
-      background: radial-gradient(circle at top, rgba(148,163,184,0.35), transparent 55%),
-                  rgba(15,23,42,0.96);
-      border-radius: 22px;
-      border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: 0 28px 70px rgba(15,23,42,0.9);
-      padding: 20px;
-      backdrop-filter: blur(18px);
-      position: relative;
-      overflow: hidden;
-      animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .app-shell::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(248,113,113,0.16), transparent 55%),
-        radial-gradient(circle at 85% 100%, rgba(96,165,250,0.16), transparent 55%);
-      pointer-events: none;
-      mix-blend-mode: screen;
-    }
-
-    .app-header {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      gap: 12px;
-    }
-
-    .title-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .app-title {
-      font-size: clamp(20px, 5vw, 24px);
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      animation: titleGlow 2s ease-in-out infinite;
-    }
-
-    @keyframes titleGlow {
-      0%, 100% {
-        text-shadow: 0 0 10px rgba(249,115,22,0.3);
-      }
-      50% {
-        text-shadow: 0 0 20px rgba(249,115,22,0.6);
-      }
-    }
-
-    .chip {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      padding: 3px 8px 2px;
-      border-radius: 20px;
-      border: 1px solid rgba(248,250,252,0.18);
-      background: linear-gradient(135deg, rgba(249,115,22,0.25), rgba(15,23,42,0.4));
-      color: #fff;
-      animation: chipPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes chipPulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.05);
-      }
-    }
-
-    .pill-row {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      flex-wrap: wrap;
-      animation: fadeIn 0.8s ease 0.3s backwards;
-    }
-
-    .pill {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
-      color: var(--muted);
-      background: rgba(15,23,42,0.7);
-      transition: all 0.3s ease;
-    }
-
-    .pill strong {
-      color: #e5e7eb;
-      font-weight: 600;
-    }
-
-    .pill:hover {
-      border-color: rgba(249,115,22,0.6);
-      color: #e5e7eb;
-      transform: translateY(-2px);
-    }
-
-    .flame-orb {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 60%, #020617);
-      position: relative;
-      box-shadow:
-        0 0 22px rgba(248,113,22,0.75),
-        0 0 60px rgba(248,113,22,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fffbeb;
-      font-weight: 800;
-      font-size: 16px;
-      animation: flameFloat 3s ease-in-out infinite;
-    }
-
-    @keyframes flameFloat {
-      0%, 100% {
-        transform: translateY(0px);
-      }
-      50% {
-        transform: translateY(-8px);
-      }
-    }
-
-    .flame-orb::after {
-      content: "";
-      position: absolute;
-      inset: 2px;
-      border-radius: inherit;
-      background: radial-gradient(circle at 30% 0%, rgba(254,249,195,0.8), transparent 55%);
-      mix-blend-mode: screen;
-      opacity: 0.7;
-    }
-
-    .layout {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    @media (min-width: 768px) {
-      .layout {
-        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      }
-    }
-
-    .panel {
-      position: relative;
-      border-radius: var(--radius);
-      background: radial-gradient(circle at top left, rgba(148,163,184,0.18), transparent 55%),
-                  rgba(15,23,42,0.95);
-      border: var(--border-subtle);
-      padding: 14px;
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-      animation: fadeIn 0.8s ease 0.4s backwards;
-      transition: all 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .panel:hover {
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    }
-
-    .panel h2 {
-      margin: 0 0 8px;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .panel h2 span.label {
-      color: #e5e7eb;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      border-radius: 999px;
-      padding: 2px 8px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.85);
-    }
-
-    .names-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .names-row .side-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-    }
-
-    .input-pair {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      min-width: 200px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .field label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(148,163,184,0.4);
-      background: rgba(15,23,42,0.9);
-      color: var(--text);
-      font-size: 14px;
-      outline: none;
-      transition: all 0.3s ease;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-
-    input[type="text"]::placeholder {
-      color: rgba(148,163,184,0.65);
-    }
-
-    input[type="text"]:focus {
-      border-color: rgba(249,115,22,0.9);
-      box-shadow: 0 0 0 2px rgba(249,115,22,0.2);
-      background: rgba(15,23,42,0.95);
-      transform: scale(1.02);
-    }
-
-    input[type="text"]:active {
-      transform: scale(0.98);
-    }
-
-    .actions-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-
-    .hint {
-      font-size: 11px;
-      color: var(--muted);
-      flex: 1;
-      min-width: 150px;
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border-radius: 999px;
-      border: 1px solid transparent;
-      padding: 8px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: none;
-      color: var(--text);
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-      white-space: nowrap;
-      -webkit-user-select: none;
-      user-select: none;
-      touch-action: manipulation;
-    }
-
-    button:active {
-      transform: scale(0.95);
-    }
-
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #f97316, #fb923c);
-      border-color: rgba(248,250,252,0.05);
-      color: #111827;
-      box-shadow:
-        0 10px 22px rgba(248,113,22,0.45),
-        0 0 0 1px rgba(15,23,42,0.75) inset;
-    }
-
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #fb923c, #fdba74);
-      transform: translateY(-2px);
-      box-shadow:
-        0 14px 28px rgba(248,113,22,0.5),
-        0 0 0 1px rgba(15,23,42,0.75) inset;
-    }
-
-    .btn-primary:active {
-      transform: scale(0.95);
-    }
-
-    .btn-ghost {
-      border-color: rgba(148,163,184,0.5);
-      background: rgba(15,23,42,0.7);
-      color: var(--muted);
-    }
-
-    .btn-ghost:hover {
-      border-color: rgba(148,163,184,0.9);
-      color: #e5e7eb;
-      background: rgba(15,23,42,0.9);
-      transform: translateY(-1px);
-    }
-
-    .result-shell {
-      position: relative;
-      text-align: center;
-      padding: 8px;
-      min-height: 160px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .result-shell.reveal {
-      animation: resultPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes resultPop {
-      0% {
-        transform: scale(0.3);
-        opacity: 0;
-      }
-      50% {
-        transform: scale(1.15);
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .flame-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: conic-gradient(from 200deg, rgba(248,113,22,0.2), rgba(37,99,235,0.2), rgba(248,113,22,0.25));
-      border: 1px solid rgba(148,163,184,0.5);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      margin-bottom: 8px;
-      color: #e5e7eb;
-      animation: badgeBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes badgeBounce {
-      0% {
-        transform: scale(0);
-        opacity: 0;
-      }
-      60% {
-        transform: scale(1.1);
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .flame-letter {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 65%, #020617);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 14px;
-      color: #fffbeb;
-      box-shadow: 0 0 15px rgba(248,113,22,0.9);
-    }
-
-    .result-shell.reveal .flame-letter {
-      animation: letterSpin 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.1s;
-    }
-
-    @keyframes letterSpin {
-      0% {
-        transform: rotate(-180deg) scale(0.5);
-        opacity: 0;
-      }
-      50% {
-        transform: rotate(90deg) scale(1.3);
-      }
-      100% {
-        transform: rotate(360deg) scale(1);
-        opacity: 1;
-      }
-    }
-
-    .relationship {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin: 8px 0 4px;
-      animation: textSlideIn 0.5s ease 0.3s backwards;
-    }
-
-    @keyframes textSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-15px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .relationship span {
-      background: linear-gradient(135deg, #fed7aa, #fbbf24);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .relationship-detail {
-      font-size: 12px;
-      color: var(--muted);
-      margin: 4px 0 8px;
-      line-height: 1.4;
-      animation: fadeInUp 0.5s ease 0.45s backwards;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .tag {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.5);
-      color: var(--muted);
-      background: rgba(15,23,42,0.8);
-      transition: all 0.3s ease;
-      animation: tagBubble 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) backwards;
-    }
-
-    .tag:nth-child(1) { animation-delay: 0.5s; }
-    .tag:nth-child(2) { animation-delay: 0.6s; }
-    .tag:nth-child(3) { animation-delay: 0.7s; }
-    .tag:nth-child(4) { animation-delay: 0.8s; }
-
-    @keyframes tagBubble {
-      from {
-        transform: scale(0);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .tag:hover {
-      border-color: rgba(249,115,22,0.6);
-      color: #e5e7eb;
-      transform: translateY(-2px);
-    }
-
-    .error {
-      margin-top: 6px;
-      font-size: 11px;
-      color: var(--danger);
-      animation: shake 0.3s ease;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
-    }
-
-    .mini-steps {
-      margin-top: 8px;
-      border-radius: 8px;
-      border: 1px dashed rgba(148,163,184,0.5);
-      background: rgba(15,23,42,0.8);
-      padding: 8px;
-      font-size: 11px;
-      color: var(--muted);
-      animation: slideIn 0.6s ease 0.5s backwards;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    .mini-steps strong {
-      color: #e5e7eb;
-    }
-
-    .mini-steps ul {
-      padding-left: 14px;
-      margin: 4px 0 0;
-    }
-
-    .mini-steps li {
-      margin: 2px 0;
-      font-size: 10px;
-    }
-
-    .footer {
-      margin-top: 12px;
-      font-size: 10px;
-      color: var(--muted);
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      position: relative;
-      text-align: center;
-      animation: fadeIn 0.8s ease 0.6s backwards;
-    }
-
-    .footer a {
-      color: #f97316;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .footer a:hover {
-      text-decoration: underline;
-    }
-
-    .confetti-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-      overflow: hidden;
-    }
-
-    .confetti {
-      position: absolute;
-      font-size: 20px;
-      animation: confettiFall 3s linear forwards;
-    }
-
-    @keyframes confettiFall {
-      0% {
-        transform: translateY(-50px) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
-      }
     }
 
     /* Privacy Modal Styles */
@@ -734,7 +72,7 @@
                   rgba(15,23,42,0.98);
       border: 1px solid rgba(148,163,184,0.4);
       border-radius: 20px;
-      padding: 28px;
+      padding: 24px;
       max-width: 480px;
       width: 100%;
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
@@ -771,7 +109,7 @@
     }
 
     .privacy-icon {
-      font-size: 32px;
+      font-size: 28px;
       animation: iconBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s backwards;
     }
 
@@ -788,7 +126,7 @@
 
     .privacy-header h3 {
       margin: 0;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
       letter-spacing: 0.02em;
       color: #e5e7eb;
@@ -812,11 +150,22 @@
     }
 
     .privacy-body p {
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.6;
       color: var(--muted);
       margin: 0 0 12px;
       animation: fadeInUp 0.5s ease 0.4s backwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .privacy-features {
@@ -834,7 +183,7 @@
       background: rgba(15,23,42,0.7);
       border: 1px solid rgba(148,163,184,0.3);
       border-radius: 10px;
-      font-size: 13px;
+      font-size: 12px;
       color: #e5e7eb;
       animation: featureSlideIn 0.4s ease backwards;
     }
@@ -855,7 +204,7 @@
     }
 
     .privacy-feature span:first-child {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .privacy-footer {
@@ -869,8 +218,8 @@
       background: linear-gradient(135deg, #f97316, #fb923c);
       border: 1px solid rgba(248,250,252,0.1);
       border-radius: 999px;
-      padding: 12px 32px;
-      font-size: 14px;
+      padding: 11px 28px;
+      font-size: 13px;
       font-weight: 700;
       color: #111827;
       cursor: pointer;
@@ -890,104 +239,665 @@
       transform: scale(0.95);
     }
 
-    /* Mobile optimizations */
-    @media (max-width: 480px) {
+    /* APP SHELL - MOBILE OPTIMIZED */
+    .app-shell {
+      width: 100%;
+      max-width: 720px;
+      background: radial-gradient(circle at top, rgba(148,163,184,0.35), transparent 55%),
+                  rgba(15,23,42,0.96);
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow: 0 28px 70px rgba(15,23,42,0.9);
+      padding: 18px;
+      backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(248,113,113,0.16), transparent 55%),
+        radial-gradient(circle at 85% 100%, rgba(96,165,250,0.16), transparent 55%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .app-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .title-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .app-title {
+      font-size: 18px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 2px 7px 1px;
+      border-radius: 16px;
+      border: 1px solid rgba(248,250,252,0.18);
+      background: linear-gradient(135deg, rgba(249,115,22,0.25), rgba(15,23,42,0.4));
+      color: #fff;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+      background: rgba(15,23,42,0.7);
+      white-space: nowrap;
+    }
+
+    .pill strong {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .flame-orb {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 60%, #020617);
+      position: relative;
+      box-shadow:
+        0 0 18px rgba(248,113,22,0.7),
+        0 0 50px rgba(248,113,22,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fffbeb;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .flame-orb::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 0%, rgba(254,249,195,0.8), transparent 55%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+    }
+
+    .layout {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .layout {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      }
+      .app-shell {
+        padding: 24px;
+      }
+      .app-title {
+        font-size: 24px;
+      }
+      .chip {
+        font-size: 11px;
+        padding: 3px 8px 2px;
+      }
+      .pill {
+        font-size: 10px;
+        padding: 3px 8px;
+      }
+      .flame-orb {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+      }
+    }
+
+    .panel {
+      position: relative;
+      border-radius: var(--radius);
+      background: radial-gradient(circle at top left, rgba(148,163,184,0.18), transparent 55%),
+                  rgba(15,23,42,0.95);
+      border: var(--border-subtle);
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .panel h2 span.label {
+      color: #e5e7eb;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border-radius: 999px;
+      padding: 2px 7px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.85);
+      white-space: nowrap;
+    }
+
+    .names-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .names-row .side-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .input-pair {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      gap: 6px;
+      min-width: 0;
+    }
+
+    @media (min-width: 500px) {
+      .input-pair {
+        grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .field label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.9);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      min-width: 0;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(148,163,184,0.65);
+    }
+
+    input[type="text"]:focus {
+      border-color: rgba(249,115,22,0.9);
+      box-shadow: 0 0 0 1px rgba(249,115,22,0.35);
+      background: rgba(15,23,42,0.95);
+    }
+
+    .mode-selector-wrapper {
+      margin-bottom: 8px;
+      padding: 8px;
+      background: rgba(249,115,22,0.08);
+      border: 1px dashed rgba(249,115,22,0.4);
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .mode-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .mode-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .mode-badge {
+      font-size: 8px;
+      padding: 2px 5px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: #111;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      animation: pulse 2s ease-in-out infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    .mode-select {
+      width: 100%;
+      appearance: none;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--text);
+      padding: 9px 30px 9px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23f97316' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      transition: all 0.2s ease;
+    }
+
+    .mode-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(249,115,22,0.2);
+      outline: none;
+    }
+
+    .mode-select:hover {
+      border-color: var(--accent);
+    }
+
+    .actions-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      font-size: 10px;
+      color: var(--muted);
+      flex: 1;
+      min-width: 140px;
+      line-height: 1.4;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 7px 12px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      color: var(--text);
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+      white-space: nowrap;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      border-color: rgba(248,250,252,0.05);
+      color: #111827;
+      box-shadow:
+        0 8px 18px rgba(248,113,22,0.4),
+        0 0 0 1px rgba(15,23,42,0.75) inset;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #fb923c, #fdba74);
+    }
+
+    .btn-ghost {
+      border-color: rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.7);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(148,163,184,0.9);
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .result-shell {
+      position: relative;
+      text-align: center;
+      padding: 6px 6px 8px;
+    }
+
+    .result-shell.reveal {
+      animation: resultPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes resultPop {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .flame-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: conic-gradient(from 200deg, rgba(248,113,22,0.2), rgba(37,99,235,0.2), rgba(248,113,22,0.25));
+      border: 1px solid rgba(148,163,184,0.5);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 5px;
+      color: #e5e7eb;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .flame-letter {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #f97316, #b91c1c 65%, #020617);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      color: #fffbeb;
+      box-shadow: 0 0 12px rgba(248,113,22,0.8);
+      flex-shrink: 0;
+    }
+
+    .result-shell.reveal .flame-letter {
+      animation: letterGlow 0.6s ease 0.2s;
+    }
+
+    @keyframes letterGlow {
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(248,113,22,0.8);
+      }
+      50% {
+        box-shadow: 
+          0 0 30px rgba(248,113,22,1),
+          0 0 60px rgba(248,113,22,0.6);
+        transform: scale(1.2);
+      }
+    }
+
+    .vedic-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      margin-bottom: 6px;
+    }
+
+    .planet-icon {
+      font-size: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .num-display {
+      font-size: 40px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 12px rgba(167,139,250,0.4));
+    }
+
+    .relationship {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+
+    .relationship span {
+      color: #fed7aa;
+    }
+
+    .relationship-detail {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .tag {
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 7px 1px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      color: var(--muted);
+      background: rgba(15,23,42,0.8);
+      white-space: nowrap;
+    }
+
+    .error {
+      margin-top: 5px;
+      font-size: 10px;
+      color: var(--danger);
+    }
+
+    .mini-steps {
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px dashed rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.85);
+      padding: 7px 9px;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .mini-steps strong {
+      color: #e5e7eb;
+    }
+
+    .mini-steps ul {
+      padding-left: 14px;
+      margin: 4px 0 0;
+    }
+
+    .mini-steps li {
+      margin: 3px 0;
+      line-height: 1.3;
+    }
+
+    .footer {
+      margin-top: 10px;
+      font-size: 9px;
+      color: var(--muted);
+      text-align: center;
+      position: relative;
+    }
+
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9998;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      font-size: 18px;
+      animation: confettiFall 3s linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 400px) {
       body {
         padding: 12px;
       }
-
       .app-shell {
-        padding: 16px;
+        padding: 14px;
         border-radius: 16px;
       }
-
       .app-title {
-        font-size: 18px;
-      }
-
-      .chip {
-        font-size: 8px;
-      }
-
-      .pill {
-        font-size: 8px;
-        padding: 2px 6px;
-      }
-
-      .flame-orb {
-        width: 36px;
-        height: 36px;
-        font-size: 14px;
-      }
-
-      .panel {
-        padding: 12px;
-      }
-
-      .input-pair {
-        grid-template-columns: 1fr;
-        gap: 6px;
-      }
-
-      input[type="text"] {
-        padding: 12px;
         font-size: 16px;
       }
-
-      button {
-        padding: 10px 12px;
-        font-size: 13px;
+      .panel {
+        padding: 10px;
       }
-
-      .flame-letter {
-        width: 28px;
-        height: 28px;
-        font-size: 13px;
-      }
-
-      .relationship {
-        font-size: 14px;
-      }
-
-      .tag {
-        font-size: 9px;
-        padding: 3px 8px;
-      }
-
-      .mini-steps {
-        font-size: 10px;
-        padding: 6px;
-      }
-
-      .mini-steps li {
-        font-size: 9px;
-      }
-
       .privacy-card {
         padding: 20px;
       }
-
-      .privacy-header h3 {
-        font-size: 18px;
-      }
-
-      .privacy-body p {
-        font-size: 13px;
-      }
-
-      .privacy-feature {
-        font-size: 12px;
-        padding: 7px 10px;
-      }
-
       .btn-privacy-ok {
         padding: 10px 24px;
+        font-size: 12px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .panel h2 {
+        font-size: 12px;
+      }
+      .panel h2 span.label {
+        font-size: 10px;
+      }
+      .hint {
+        font-size: 11px;
+      }
+      button {
+        font-size: 12px;
+        padding: 7px 14px;
+      }
+      .relationship {
+        font-size: 15px;
+      }
+      .relationship-detail {
+        font-size: 12px;
+      }
+      .tag {
+        font-size: 9px;
+        padding: 3px 8px 2px;
+      }
+      .flame-letter {
+        width: 26px;
+        height: 26px;
         font-size: 13px;
+      }
+      .num-display {
+        font-size: 48px;
+      }
+      .planet-icon {
+        font-size: 28px;
       }
     }
   </style>
 </head>
 <body>
+  
   <!-- Privacy Modal -->
   <div class="privacy-modal" id="privacyModal">
     <div class="privacy-card">
@@ -1014,7 +924,7 @@
           </div>
         </div>
         
-        <p style="margin-top: 16px; font-size: 13px; color: #9ca3af;">
+        <p style="margin-top: 16px; font-size: 12px; color: #9ca3af;">
           TL;DR: Your names, your secrets. We're just here for the nostalgia! ✨
         </p>
       </div>
@@ -1035,12 +945,12 @@
           <span class="chip">Match Lab</span>
         </div>
         <div class="pill-row">
-          <div class="pill"><strong>F</strong> Friends</div>
-          <div class="pill"><strong>L</strong> Love</div>
-          <div class="pill"><strong>A</strong> Affection</div>
-          <div class="pill"><strong>M</strong> Marriage</div>
-          <div class="pill"><strong>E</strong> Enemies</div>
-          <div class="pill"><strong>S</strong> Siblings</div>
+          <div class="pill"><strong>F</strong>riends</div>
+          <div class="pill"><strong>L</strong>ove</div>
+          <div class="pill"><strong>A</strong>ffection</div>
+          <div class="pill"><strong>M</strong>arriage</div>
+          <div class="pill"><strong>E</strong>nemies</div>
+          <div class="pill"><strong>S</strong>iblings</div>
         </div>
       </div>
       <div class="flame-orb">🔥</div>
@@ -1049,8 +959,8 @@
     <main class="layout">
       <section class="panel" aria-label="Input names for FLAMES">
         <h2>
-          Enter names
-          <span class="label">Play now</span>
+          <span>Enter names</span>
+          <span class="label">Paper game, web vibes</span>
         </h2>
 
         <div class="names-row">
@@ -1058,29 +968,42 @@
           <div class="input-pair">
             <div class="field">
               <label for="name1">Name one</label>
-              <input type="text" id="name1" placeholder="Murarilal Dholakia" />
+              <input type="text" id="name1" placeholder="e.g. Murarilal Dholakia" />
             </div>
             <div class="field">
               <label for="name2">Name two</label>
-              <input type="text" id="name2" placeholder="Champa Rani" />
+              <input type="text" id="name2" placeholder="e.g. Champa Rani" />
             </div>
           </div>
         </div>
 
+        <div class="mode-selector-wrapper">
+          <div class="mode-label-row">
+            <span class="mode-label">
+              Choose Algorithm
+            </span>
+            <span class="mode-badge">2 MODES</span>
+          </div>
+          <select id="gameMode" class="mode-select">
+            <option value="flames">🔥 Classic FLAMES</option>
+            <option value="vedic">🕉️ Vedic Numerology</option>
+          </select>
+        </div>
+
         <div class="actions-row">
-          <p class="hint">Classic paper game, web style</p>
+          <p class="hint" id="modeHint">Uses the classic letter-crossing FLAMES logic for a just-for-fun match.</p>
           <div class="btn-row">
             <button class="btn-ghost" id="resetBtn" type="button">Reset</button>
-            <button class="btn-primary" id="matchBtn" type="button">🔥 FLAMES</button>
+            <button class="btn-primary" id="matchBtn" type="button">🔥 Run Match</button>
           </div>
         </div>
 
-        <div class="mini-steps">
-          <strong>How it works:</strong>
+        <div class="mini-steps" id="howItWorks">
+          <strong>How Classic FLAMES works:</strong>
           <ul>
-            <li>Cancel shared letters from both names</li>
-            <li>Count leftover letters</li>
-            <li>Pick your result from F-L-A-M-E-S</li>
+            <li>Strip spaces and cancel shared letters in both names.</li>
+            <li>Count the leftover letters.</li>
+            <li>Use that count to pick one letter from F-L-A-M-E-S.</li>
           </ul>
         </div>
 
@@ -1089,47 +1012,76 @@
 
       <aside class="panel" aria-label="FLAMES result">
         <h2>
-          Result
-          <span class="label">For fun</span>
+          <span>Result</span>
+          <span class="label">For entertainment only</span>
         </h2>
 
         <div class="result-shell" id="resultShell">
-          <div class="flame-badge">
-            <span class="flame-letter" id="flameLetter">–</span>
-            <span id="badgeText">Enter names</span>
+          
+          <div id="flamesView">
+            <div class="flame-badge">
+              <span class="flame-letter" id="flameLetter">–</span>
+              <span id="badgeText">Waiting for names</span>
+            </div>
+          </div>
+
+          <div id="vedicView" style="display: none;">
+            <div class="vedic-badge">
+              <span class="planet-icon" id="planetIcon">🪐</span>
+              <span class="num-display" id="vedicNumber">?</span>
+            </div>
           </div>
 
           <div class="relationship">
-            <span id="relationshipLabel">Waiting...</span>
+            <span id="relationshipLabel">No match yet</span>
           </div>
           <div class="relationship-detail" id="relationshipDetail">
-            Type two names above and hit FLAMES to reveal your match
+            Type two names and hit "Run Match" to see what the system says.
           </div>
 
           <div class="tags" id="tagsRow">
-            <span class="tag">nostalgia</span>
-            <span class="tag">playground game</span>
+            <span class="tag">nostalgia mode</span>
+            <span class="tag">school desk game</span>
           </div>
         </div>
       </aside>
     </main>
 
     <footer class="footer">
-      <span>🎮 Not serious advice • Just for fun</span>
+      🔒 Privacy: No data stored. Everything runs in your browser.
     </footer>
   </div>
 
   <script>
+    // Privacy Modal Handler
+    const privacyModal = document.getElementById("privacyModal");
+    const privacyOkBtn = document.getElementById("privacyOkBtn");
+
+    privacyOkBtn.addEventListener("click", function() {
+      privacyModal.classList.add("hidden");
+      name1Input.focus();
+    });
+
+    // MAIN APP LOGIC
     const name1Input = document.getElementById("name1");
     const name2Input = document.getElementById("name2");
     const matchBtn = document.getElementById("matchBtn");
     const resetBtn = document.getElementById("resetBtn");
+    const modeSelect = document.getElementById("gameMode");
+    const modeHint = document.getElementById("modeHint");
+    const howItWorks = document.getElementById("howItWorks");
     const errorEl = document.getElementById("error");
     const resultShell = document.getElementById("resultShell");
     const confettiContainer = document.getElementById("confettiContainer");
 
+    const flamesView = document.getElementById("flamesView");
+    const vedicView = document.getElementById("vedicView");
+
     const flameLetterEl = document.getElementById("flameLetter");
     const badgeTextEl = document.getElementById("badgeText");
+    const vedicNumberEl = document.getElementById("vedicNumber");
+    const planetIconEl = document.getElementById("planetIcon");
+
     const relationshipLabelEl = document.getElementById("relationshipLabel");
     const relationshipDetailEl = document.getElementById("relationshipDetail");
     const tagsRowEl = document.getElementById("tagsRow");
@@ -1137,34 +1089,57 @@
     const FLAMES_MAP = {
       F: {
         label: "Friends",
-        detail: "Strong buddy energy. Memes, inside jokes, late-night chats!",
-        tags: ["platonic vibes", "trusted ally", "bestie"]
+        detail: "Strong buddy energy. Expect memes, inside jokes, and late-night chats.",
+        tags: ["platonic vibes", "trusted ally"]
       },
       L: {
         label: "Love",
-        detail: "Soft-focus filter unlocked. Romantic potential detected!",
-        tags: ["crush alert", "heart eyes", "chemistry"]
+        detail: "Soft-focus filter unlocked. The game thinks there's romantic potential here.",
+        tags: ["crush alert", "heart eyes"]
       },
       A: {
         label: "Affection",
-        detail: "Warm, caring connection. Support, hype, gentle chaos.",
-        tags: ["comfort zone", "soft spot", "caring"]
+        detail: "Warm, caring connection. Lots of support, hype, and gentle chaos.",
+        tags: ["comfort zone", "soft spot"]
       },
       M: {
         label: "Marriage",
-        detail: "Long-term storyline. Commitment, stability, shared plans!",
-        tags: ["endgame", "power duo", "forever"]
+        detail: "Long-term storyline unlocked. Think commitment, stability, and shared plans.",
+        tags: ["endgame?", "power duo"]
       },
       E: {
         label: "Enemies",
-        detail: "Spicy dynamic. Rivalry, banter, clashing personalities.",
-        tags: ["frenemies", "main character conflict", "spicy"]
+        detail: "Spicy dynamic detected. Rivalry, banter, or just clashing personalities.",
+        tags: ["frenemies", "main character conflict"]
       },
       S: {
         label: "Siblings",
-        detail: "Sibling energy. Teasing, roasting, looking out for each other.",
-        tags: ["chaos but caring", "family-coded", "squad"]
+        detail: "Sibling energy. Teasing, roasting, but low-key looking out for each other.",
+        tags: ["chaos but caring", "family-coded"]
       }
+    };
+
+    const VEDIC_MAP = {
+      a: 1, i: 1, j: 1, q: 1, y: 1,
+      b: 2, k: 2, r: 2,
+      c: 3, g: 3, l: 3, s: 3,
+      d: 4, m: 4, t: 4,
+      e: 5, h: 5, n: 5, x: 5,
+      u: 6, v: 6, w: 6,
+      o: 7, z: 7,
+      f: 8, p: 8
+    };
+
+    const VEDIC_MEANINGS = {
+      1: { planet: "☀️", label: "Sun (Surya)", detail: "Power couple. High ego, leadership, and ambition.", tags: ["Royalty", "Fire"] },
+      2: { planet: "🌙", label: "Moon (Chandra)", detail: "Emotional connection. Intuitive and moody.", tags: ["Water", "Deep"] },
+      3: { planet: "⚡", label: "Jupiter (Guru)", detail: "Wisdom match. Growth, learning, and luck.", tags: ["Expansion", "Luck"] },
+      4: { planet: "☄️", label: "Rahu", detail: "Unconventional bond. Breaks rules, electric energy.", tags: ["Wildcard", "Rebel"] },
+      5: { planet: "🗣️", label: "Mercury (Budha)", detail: "Intellectual match. Great communication and wit.", tags: ["Chatty", "Smart"] },
+      6: { planet: "💎", label: "Venus (Shukra)", detail: "Romance & Luxury. Passionate and aesthetic.", tags: ["Love", "Beauty"] },
+      7: { planet: "🧘", label: "Ketu", detail: "Spiritual bond. Detached from worldly drama.", tags: ["Mystic", "Soul"] },
+      8: { planet: "🪐", label: "Saturn (Shani)", detail: "Serious bond. Slow burn, requires patience.", tags: ["Karma", "Work"] },
+      9: { planet: "⚔️", label: "Mars (Mangal)", detail: "High energy. Passionate, impulsive, and driven.", tags: ["Action", "Heat"] }
     };
 
     function normalizeName(value) {
@@ -1194,7 +1169,7 @@
       const clean2 = normalizeName(name2);
 
       if (!clean1 || !clean2) {
-        throw new Error("Enter two valid names with at least one letter each");
+        throw new Error("Please enter two valid names with at least one letter each.");
       }
 
       const remainingCount = countUniqueLetters(clean1, clean2);
@@ -1216,10 +1191,39 @@
       return arr[0];
     }
 
+    function getVedicSum(name) {
+      const clean = normalizeName(name);
+      let sum = 0;
+      for (let char of clean) {
+        if (VEDIC_MAP[char]) sum += VEDIC_MAP[char];
+      }
+      while (sum > 9) {
+        sum = String(sum).split('').reduce((a,b) => parseInt(a)+parseInt(b), 0);
+      }
+      return sum;
+    }
+
+    function runVedic(name1, name2) {
+      const clean1 = normalizeName(name1);
+      const clean2 = normalizeName(name2);
+
+      if (!clean1 || !clean2) {
+        throw new Error("Please enter two valid names with at least one letter each.");
+      }
+
+      const v1 = getVedicSum(name1);
+      const v2 = getVedicSum(name2);
+      let total = v1 + v2;
+      while (total > 9) {
+        total = String(total).split('').reduce((a,b) => parseInt(a)+parseInt(b), 0);
+      }
+      return total;
+    }
+
     function createConfetti() {
       const emojis = ["🎉", "✨", "🔥", "❤️", "💫", "⭐", "🌟"];
       
-      for (let i = 0; i < 35; i++) {
+      for (let i = 0; i < 30; i++) {
         const confetti = document.createElement("div");
         confetti.className = "confetti";
         confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
@@ -1233,22 +1237,18 @@
       }
     }
 
-    function renderResult(letter, rawName1, rawName2) {
+    function renderFlamesResult(letter, rawName1, rawName2) {
       const def = FLAMES_MAP[letter] || FLAMES_MAP["F"];
 
-      resultShell.classList.remove("reveal");
-      
-      setTimeout(() => {
-        createConfetti();
-        resultShell.classList.add("reveal");
-      }, 50);
+      flamesView.style.display = "block";
+      vedicView.style.display = "none";
 
       flameLetterEl.textContent = letter;
       relationshipLabelEl.textContent = def.label;
       relationshipDetailEl.textContent = def.detail;
 
-      const pretty1 = rawName1.trim() || "You";
-      const pretty2 = rawName2.trim() || "Them";
+      const pretty1 = rawName1.trim() || "Name one";
+      const pretty2 = rawName2.trim() || "Name two";
       badgeTextEl.textContent = pretty1 + " × " + pretty2;
 
       tagsRowEl.innerHTML = "";
@@ -1258,6 +1258,36 @@
         span.textContent = tag;
         tagsRowEl.appendChild(span);
       });
+
+      const base = document.createElement("span");
+      base.className = "tag";
+      base.textContent = "classic FLAMES";
+      tagsRowEl.appendChild(base);
+    }
+
+    function renderVedicResult(number, rawName1, rawName2) {
+      const def = VEDIC_MEANINGS[number];
+
+      flamesView.style.display = "none";
+      vedicView.style.display = "block";
+
+      vedicNumberEl.textContent = number;
+      planetIconEl.textContent = def.planet;
+      relationshipLabelEl.textContent = def.label;
+      relationshipDetailEl.textContent = def.detail;
+
+      tagsRowEl.innerHTML = "";
+      def.tags.forEach(function(tag) {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = tag;
+        tagsRowEl.appendChild(span);
+      });
+
+      const base = document.createElement("span");
+      base.className = "tag";
+      base.textContent = "Vedic System";
+      tagsRowEl.appendChild(base);
     }
 
     function resetUI() {
@@ -1267,33 +1297,77 @@
 
       resultShell.classList.remove("reveal");
 
+      flamesView.style.display = "block";
+      vedicView.style.display = "none";
+
       flameLetterEl.textContent = "–";
-      badgeTextEl.textContent = "Enter names";
-      relationshipLabelEl.textContent = "Waiting...";
-      relationshipDetailEl.textContent = "Type two names above and hit FLAMES to reveal your match";
+      badgeTextEl.textContent = "Waiting for names";
+      relationshipLabelEl.textContent = "No match yet";
+      relationshipDetailEl.textContent = "Type two names and hit \"Run Match\" to see what the system says.";
 
       tagsRowEl.innerHTML = "";
       const t1 = document.createElement("span");
       t1.className = "tag";
-      t1.textContent = "nostalgia";
+      t1.textContent = "nostalgia mode";
       const t2 = document.createElement("span");
       t2.className = "tag";
-      t2.textContent = "playground game";
+      t2.textContent = "school desk game";
       tagsRowEl.appendChild(t1);
       tagsRowEl.appendChild(t2);
-
-      name1Input.focus();
     }
+
+    modeSelect.addEventListener("change", function() {
+      const mode = this.value;
+      if (mode === "flames") {
+        modeHint.textContent = "Uses the classic letter-crossing FLAMES logic for a just-for-fun match.";
+        howItWorks.innerHTML = `
+          <strong>How Classic FLAMES works:</strong>
+          <ul>
+            <li>Strip spaces and cancel shared letters in both names.</li>
+            <li>Count the leftover letters.</li>
+            <li>Use that count to pick one letter from F-L-A-M-E-S.</li>
+          </ul>
+        `;
+      } else {
+        modeHint.innerHTML = 'Uses the <strong>Chaldean (Vedic)</strong> system favoured by Indian Astrologers.';
+        howItWorks.innerHTML = `
+          <strong>How Vedic Numerology works:</strong>
+          <ul>
+            <li>Assign numbers to letters (e.g. H=5, based on sound vibration).</li>
+            <li>Sum and reduce each name to a single digit (1-9).</li>
+            <li>Combine both numbers to reveal the planetary relationship.</li>
+          </ul>
+        `;
+      }
+    });
 
     matchBtn.addEventListener("click", function() {
       errorEl.textContent = "";
       try {
         const raw1 = name1Input.value;
         const raw2 = name2Input.value;
-        const letter = runFlames(raw1, raw2);
-        renderResult(letter, raw1, raw2);
+        const mode = modeSelect.value;
+
+        resultShell.classList.remove("reveal");
+
+        if (mode === "flames") {
+          const letter = runFlames(raw1, raw2);
+          setTimeout(() => {
+            createConfetti();
+            renderFlamesResult(letter, raw1, raw2);
+            resultShell.classList.add("reveal");
+          }, 50);
+        } else {
+          const number = runVedic(raw1, raw2);
+          setTimeout(() => {
+            createConfetti();
+            renderVedicResult(number, raw1, raw2);
+            resultShell.classList.add("reveal");
+          }, 50);
+        }
+        
       } catch (err) {
-        errorEl.textContent = err.message;
+        errorEl.textContent = err.message || "Something went wrong. Try again.";
       }
     });
 
@@ -1310,20 +1384,6 @@
           }
         }
       });
-    });
-
-    // Privacy Modal Handler
-    const privacyModal = document.getElementById("privacyModal");
-    const privacyOkBtn = document.getElementById("privacyOkBtn");
-
-    privacyOkBtn.addEventListener("click", function() {
-      privacyModal.classList.add("hidden");
-      name1Input.focus();
-    });
-
-    // Auto-focus on load (after modal is closed)
-    window.addEventListener("load", function() {
-      // Modal is shown by default, focus happens after clicking OK
     });
   </script>
 </body>
